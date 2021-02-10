@@ -18,3 +18,4 @@ The app uses VLC media players functionality for downloading audio from youtube.
 |-h, -help|show this help message and exit|
 |--out <FILENAME>|Specify name of output file.|
 |-verbose|Show VLC media player GUI when downloading audio.|
+|-no_url_check|Disable URL regex check. This may lead to unexpected behavior or corrupted downloads.|
