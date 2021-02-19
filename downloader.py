@@ -19,14 +19,20 @@ def isValidUrl(url):
     return False
 
 def main(args):
+    if not "VLC_HOME" in os.environ:
+        print("[ERROR]: Environment variable VLC_HOME not set. Set VLC_HOME to VLC executable to run this script.")
+        return -1
+    
+    vlc_path = os.getenv("VLC_HOME")
+
     url = trimUrl(args.url)
     if not args.no_url_check and not isValidUrl(url):
         return -1
     tmp = 'tmp.ogg'
     dst = args.out + ".mp3"
     
-    command_tmp = 'vlc ' + url + ' --sout=#transcode{acodec="opus",ab="128","channels=2",samplerate="44100"}:standard{access=file,mux=ogg,dst=' + tmp +'} vlc://quit'
-    command_out = 'vlc ' + tmp + ' --sout=#transcode{acodec="mp3",ab="128","channels=2",samplerate="44100"}:standard{access=file{no-overwrite},mux=dummy,dst="' + dst + '"} vlc://quit'
+    command_tmp = vlc_path + ' ' + url + ' --sout=#transcode{acodec="opus",ab="128","channels=2",samplerate="44100"}:standard{access=file,mux=ogg,dst=' + tmp +'} vlc://quit'
+    command_out = vlc_path + ' ' + tmp + ' --sout=#transcode{acodec="mp3",ab="128","channels=2",samplerate="44100"}:standard{access=file{no-overwrite},mux=dummy,dst="' + dst + '"} vlc://quit'
 
     if not args.verbose:
         command_tmp += " --qt-notification=0 --qt-start-minimized"
